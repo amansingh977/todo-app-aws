@@ -21,13 +21,20 @@ pipeline {
   }
 }
  
+    // stage('Build Application') {
+    //   steps {
+    //   //  sh 'chmod +x mvnw' 
+    //     sh 'mvn clean package -DskipTests'
+    //   }
+    // }
+
     stage('Build Application') {
-      steps {
-      //  sh 'chmod +x mvnw' 
-        sh 'mvn clean package -DskipTests'
+        steps {
+          dir('todo-springboot') {
+            sh 'mvn clean package -DskipTests'
+          }
+        }
       }
-    }
- 
     stage('Build Docker Image & Push to ECR') {
       steps {
         withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credenetials']]) {
