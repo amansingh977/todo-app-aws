@@ -1,0 +1,8 @@
+/home/dkumarch/java-project/Boot_TodoApp/src/main/java/com/laszlo/todoapp/TodoappApplication.java
+/home/dkumarch/java-project/Boot_TodoApp/src/main/java/com/laszlo/todoapp/controller/TodoItemController.java
+/home/dkumarch/java-project/Boot_TodoApp/src/main/java/com/laszlo/todoapp/model/Subject.java
+/home/dkumarch/java-project/Boot_TodoApp/src/main/java/com/laszlo/todoapp/model/TodoItem.java
+/home/dkumarch/java-project/Boot_TodoApp/src/main/java/com/laszlo/todoapp/repository/SubjectRepository.java
+/home/dkumarch/java-project/Boot_TodoApp/src/main/java/com/laszlo/todoapp/repository/TodoItemRepository.java
+/home/dkumarch/java-project/Boot_TodoApp/src/main/java/com/laszlo/todoapp/service/SubjectService.java
+/home/dkumarch/java-project/Boot_TodoApp/src/main/java/com/laszlo/todoapp/service/TodoItemService.java

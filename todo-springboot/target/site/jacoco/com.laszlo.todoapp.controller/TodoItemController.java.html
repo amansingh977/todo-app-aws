@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TodoItemController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">todoapp</a> &gt; <a href="index.source.html" class="el_package">com.laszlo.todoapp.controller</a> &gt; <span class="el_source">TodoItemController.java</span></div><h1>TodoItemController.java</h1><pre class="source lang-java linenums">package com.laszlo.todoapp.controller;
+
+import com.laszlo.todoapp.model.Subject;
+import com.laszlo.todoapp.model.TodoItem;
+import com.laszlo.todoapp.service.SubjectService;
+import com.laszlo.todoapp.service.TodoItemService;
+import java.time.LocalDate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+@Controller
+public class TodoItemController {
+
+  private final TodoItemService todoItemService;
+  private final SubjectService subjectService;
+
+  @Autowired
+<span class="fc" id="L23">  public TodoItemController(TodoItemService todoItemService, SubjectService subjectService) {</span>
+<span class="fc" id="L24">    this.todoItemService = todoItemService;</span>
+<span class="fc" id="L25">    this.subjectService = subjectService;</span>
+<span class="fc" id="L26">  }</span>
+
+  @GetMapping(&quot;/&quot;)
+  public String listTodoItems(Model model) {
+<span class="nc" id="L30">    model.addAttribute(&quot;todoItems&quot;, todoItemService.getAllTodoItems());</span>
+<span class="nc" id="L31">    model.addAttribute(&quot;subjects&quot;, subjectService.getAllSubjects()); // Pass subjects to the view</span>
+<span class="nc" id="L32">    model.addAttribute(</span>
+<span class="nc" id="L33">        &quot;currentDate&quot;, LocalDate.now()); // Useful for checking overdue status in Thymeleaf</span>
+<span class="nc" id="L34">    return &quot;index&quot;;</span>
+  }
+
+  @GetMapping(&quot;/addTodo&quot;)
+  public String showAddTodoForm(Model model) {
+<span class="nc" id="L39">    model.addAttribute(&quot;todoItem&quot;, new TodoItem());</span>
+<span class="nc" id="L40">    model.addAttribute(&quot;subjects&quot;, subjectService.getAllSubjects()); // Pass subjects for selection</span>
+<span class="nc" id="L41">    return &quot;add-todo-form&quot;;</span>
+  }
+
+  @PostMapping(&quot;/addTodo&quot;)
+  public String addTodoItem(TodoItem todoItem, RedirectAttributes redirectAttributes) {
+<span class="nc" id="L46">    todoItemService.saveTodoItem(todoItem);</span>
+<span class="nc" id="L47">    redirectAttributes.addFlashAttribute(&quot;message&quot;, &quot;Todo item added successfully!&quot;);</span>
+<span class="nc" id="L48">    return &quot;redirect:/&quot;;</span>
+  }
+
+  @GetMapping(&quot;/editTodo/{id}&quot;)
+  public String showEditTodoForm(@PathVariable Long id, Model model) {
+<span class="nc" id="L53">    todoItemService</span>
+<span class="nc" id="L54">        .getTodoItemById(id)</span>
+<span class="nc" id="L55">        .ifPresentOrElse(</span>
+<span class="nc" id="L56">            todoItem -&gt; model.addAttribute(&quot;todoItem&quot;, todoItem),</span>
+<span class="nc" id="L57">            () -&gt; model.addAttribute(&quot;message&quot;, &quot;Todo item not found!&quot;));</span>
+<span class="nc" id="L58">    model.addAttribute(&quot;subjects&quot;, subjectService.getAllSubjects()); // Pass subjects for selection</span>
+<span class="nc" id="L59">    return &quot;edit-todo-form&quot;;</span>
+  }
+
+  @PostMapping(&quot;/editTodo&quot;)
+  public String editTodoItem(TodoItem todoItem, RedirectAttributes redirectAttributes) {
+<span class="nc" id="L64">    todoItemService.saveTodoItem(todoItem);</span>
+<span class="nc" id="L65">    redirectAttributes.addFlashAttribute(&quot;message&quot;, &quot;Todo item updated successfully!&quot;);</span>
+<span class="nc" id="L66">    return &quot;redirect:/&quot;;</span>
+  }
+
+  @GetMapping(&quot;/deleteTodo/{id}&quot;)
+  public String deleteTodoItem(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+<span class="nc" id="L71">    todoItemService.deleteTodoItem(id);</span>
+<span class="nc" id="L72">    redirectAttributes.addFlashAttribute(&quot;message&quot;, &quot;Todo item deleted successfully!&quot;);</span>
+<span class="nc" id="L73">    return &quot;redirect:/&quot;;</span>
+  }
+
+  // Optional: Basic CRUD for Subjects themselves (can be in a separate SubjectController)
+  @GetMapping(&quot;/subjects&quot;)
+  public String listSubjects(Model model) {
+<span class="nc" id="L79">    model.addAttribute(&quot;subjects&quot;, subjectService.getAllSubjects());</span>
+<span class="nc" id="L80">    model.addAttribute(&quot;subject&quot;, new Subject()); // For adding new subject</span>
+<span class="nc" id="L81">    return &quot;subjects&quot;; // A new template for subjects</span>
+  }
+
+  @PostMapping(&quot;/subjects&quot;)
+  public String addSubject(Subject subject, RedirectAttributes redirectAttributes) {
+<span class="nc" id="L86">    subjectService.saveSubject(subject);</span>
+<span class="nc" id="L87">    redirectAttributes.addFlashAttribute(&quot;message&quot;, &quot;Subject added!&quot;);</span>
+<span class="nc" id="L88">    return &quot;redirect:/subjects&quot;;</span>
+  }
+
+  @GetMapping(&quot;/deleteSubject/{id}&quot;)
+  public String deleteSubject(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+<span class="nc" id="L93">    subjectService.deleteSubject(id);</span>
+<span class="nc" id="L94">    redirectAttributes.addFlashAttribute(&quot;message&quot;, &quot;Subject deleted!&quot;);</span>
+<span class="nc" id="L95">    return &quot;redirect:/subjects&quot;;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

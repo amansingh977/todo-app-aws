@@ -1,0 +1,8 @@
+com/laszlo/todoapp/service/TodoItemService.class
+com/laszlo/todoapp/controller/TodoItemController.class
+com/laszlo/todoapp/repository/TodoItemRepository.class
+com/laszlo/todoapp/TodoappApplication.class
+com/laszlo/todoapp/service/SubjectService.class
+com/laszlo/todoapp/model/TodoItem.class
+com/laszlo/todoapp/repository/SubjectRepository.class
+com/laszlo/todoapp/model/Subject.class

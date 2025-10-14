@@ -1,0 +1,7 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+todoapp,com.laszlo.todoapp.controller,TodoItemController,141,9,0,0,33,4,11,1,11,1
+todoapp,com.laszlo.todoapp.service,TodoItemService,0,26,0,0,0,8,0,5,0,5
+todoapp,com.laszlo.todoapp.service,SubjectService,0,26,0,0,0,8,0,5,0,5
+todoapp,com.laszlo.todoapp.model,Subject,3,11,0,0,1,4,1,1,1,1
+todoapp,com.laszlo.todoapp.model,TodoItem,12,12,4,0,1,5,3,1,1,1
+todoapp,com.laszlo.todoapp,TodoappApplication,5,3,0,0,2,1,1,1,1,1

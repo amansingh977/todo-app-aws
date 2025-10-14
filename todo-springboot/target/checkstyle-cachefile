@@ -1,0 +1,5 @@
+#Mon Oct 13 09:31:28 UTC 2025
+configuration*?=6297E26D30780B3B1A52FC90661914235519EA94
+module-resource*?\:checkstyle-xpath-suppressions.xml=144E944E3AF5E19BD9083B25B9DC6AAF6CD1AB76
+module-resource*?\:checkstyle-suppressions.xml=BB9AEA6BDEE2C24F10CA80FCB887EC81E0CE01B
+/home/dkumarch/java-project/Boot_TodoApp/src/main/resources/application.properties=1760347866388
