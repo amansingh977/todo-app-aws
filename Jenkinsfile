@@ -54,7 +54,7 @@ pipeline {
       steps {
         withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
           sh """
-            aws eks update-kubeconfig --name todo-eks --region $AWS_REGION
+            aws eks update-kubeconfig --name project-eks-cluster --region $AWS_REGION
             kubectl apply -f k8s/deployment.yaml
             kubectl apply -f k8s/service.yaml
           """
