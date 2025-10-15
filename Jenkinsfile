@@ -212,12 +212,13 @@ pipeline {
   }
 }
  
-    stage('Build Application') {
-      steps {
-        sh 'chmod +x mvnw' 
-        sh './mvnw clean package -DskipTests'
-      }
+stage('Build Application') {
+  steps {
+    dir('todo-springboot') {
+      sh 'mvn clean package -DskipTests'
     }
+  }
+}
  
     stage('Build Docker Image & Push to ECR') {
       steps {
