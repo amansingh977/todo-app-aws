@@ -234,27 +234,27 @@ stage('Build Application') {
   }
 }
  
-    stage('Upload Artifact to S3') {
-      steps {
-        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
-          sh """
-            aws s3 cp target/todoapp-0.0.1-SNAPSHOT.jar s3://${S3_BUCKET}/artifacts/todo-spring-${IMAGE_TAG}.jar
-          """
-        }
-      }
+  stage('Upload Artifact to S3') {
+  steps {
+    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
+      sh """
+        aws s3 cp todo-springboot/target/todoapp-0.0.1-SNAPSHOT.jar s3://${S3_BUCKET}/artifacts/todo-spring-${IMAGE_TAG}.jar
+      """
     }
+  }
+}
  
-    stage('Deploy to EKS') {
-      steps {
-        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
-          sh '''
-            aws eks update-kubeconfig --name todo-eks --region $AWS_REGION
-            kubectl apply -f k8s/deployment.yaml
-            kubectl apply -f k8s/service.yaml
-          '''
-        }
-      }
+ stage('Deploy to EKS') {
+  steps {
+    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
+      sh """
+        aws eks update-kubeconfig --name todo-eks --region $AWS_REGION
+        kubectl apply -f todo-springboot/k8s/deployment.yaml
+        kubectl apply -f todo-springboot/k8s/service.yaml
+      """
     }
+  }
+}
     stage('Smoke Test'){
       steps{
         withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
