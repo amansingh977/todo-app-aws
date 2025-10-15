@@ -221,18 +221,18 @@ stage('Build Application') {
 }
  
     stage('Build Docker Image & Push to ECR') {
-      steps {
-        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
-          sh """
-            aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${ECR_REPO}
-            docker build -t ${ECR_REPO}:${IMAGE_TAG} .
-            docker tag ${ECR_REPO}:${IMAGE_TAG} ${ECR_REPO}:latest
-            docker push ${ECR_REPO}:${IMAGE_TAG}
-            docker push ${ECR_REPO}:latest
-          """
-        }
-      }
+  steps {
+    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
+      sh """
+        aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${ECR_REPO}
+        docker build -t ${ECR_REPO}:${IMAGE_TAG} todo-springboot
+        docker tag ${ECR_REPO}:${IMAGE_TAG} ${ECR_REPO}:latest
+        docker push ${ECR_REPO}:${IMAGE_TAG}
+        docker push ${ECR_REPO}:latest
+      """
     }
+  }
+}
  
     stage('Upload Artifact to S3') {
       steps {
