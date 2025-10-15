@@ -248,7 +248,7 @@ stage('Build Application') {
   steps {
     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
       sh """
-        aws eks update-kubeconfig --name todo-eks --region $AWS_REGION
+        aws eks update-kubeconfig --name todo-app-project --region $AWS_REGION
         kubectl apply -f todo-springboot/k8s/deployment.yaml
         kubectl apply -f todo-springboot/k8s/service.yaml
       """
