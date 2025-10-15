@@ -255,17 +255,43 @@ stage('Build Application') {
     }
   }
 }
-    stage('Smoke Test'){
-      steps{
-        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
-          sh '''
-            ENDPOINT=$(kubectl get svc todo-spring-service -o jsonpath="{.status.loadBalancer.ingress[0].hostname}")  
-            curl -I http://$ENDPOINT/
-          '''
-        }
-      }
+   stage('Smoke Test') {
+  steps {
+    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials']]) {
+      sh '''
+        echo "⏳ Waiting for LoadBalancer hostname..."
+        for i in {1..10}; do
+          ENDPOINT=$(kubectl get svc todo-spring-service -o jsonpath="{.status.loadBalancer.ingress[0].hostname}")
+          if [ -n "$ENDPOINT" ]; then
+            echo "✅ Found endpoint: $ENDPOINT"
+            break
+          fi
+          echo "Waiting for ELB to be provisioned..."
+          sleep 10
+        done
+
+        if [ -z "$ENDPOINT" ]; then
+          echo "❌ LoadBalancer hostname not available after timeout."
+          exit 1
+        fi
+
+        echo "🌐 Testing endpoint: http://$ENDPOINT/"
+        for i in {1..5}; do
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://$ENDPOINT/)
+          if [ "$STATUS" = "200" ]; then
+            echo "✅ Smoke test passed."
+            exit 0
+          fi
+          echo "Waiting for service to become healthy (HTTP $STATUS)..."
+          sleep 5
+        done
+
+        echo "❌ Smoke test failed after retries."
+        exit 1
+      '''
     }
   }
+}
  
   post {
     success {
